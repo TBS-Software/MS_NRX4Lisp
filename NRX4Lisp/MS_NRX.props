@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="MS_NRX">
+	<MS_NRX Condition="'$(MS_NRX)'=='' and '$(Platform)'=='x64'">D:\PROCESSING\SDK\ModelStudio\Stable_API\Model Studio CS</MS_NRX>
+  </PropertyGroup>
+  <PropertyGroup />
+    <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MS_NRX)\Common\Common_vc7\;$(MS_NRX)\Source\UnitsCS\;$(MS_NRX)\Source\mstManagedAPI\;$(MS_NRX)\Source\msData\;$(MS_NRX)\Source\URS\;$(MS_NRX)\Source\ShieldCS\;$(MS_NRX)\Source\mstudioDB\;$(MS_NRX)\Source\mstMetal;$(MS_NRX)\Source\ViperCSObj\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>ViperCSObj.lib;ViperCS.lib;mstudioData.lib;mstMetal.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
