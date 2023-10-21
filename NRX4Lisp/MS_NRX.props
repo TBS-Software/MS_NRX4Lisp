@@ -10,7 +10,7 @@
       <AdditionalIncludeDirectories>$(MS_NRX)\Common\Common_vc7\;$(MS_NRX)\Source\UnitsCS\;$(MS_NRX)\Source\mstManagedAPI\;$(MS_NRX)\Source\msData\;$(MS_NRX)\Source\URS\;$(MS_NRX)\Source\ShieldCS\;$(MS_NRX)\Source\mstudioDB\;$(MS_NRX)\Source\mstMetal;$(MS_NRX)\Source\ViperCSObj\;$(MS_NRX)\Source\mstRouteEnt\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ViperCSObj.lib;ViperCS.lib;mstudioData.lib;mstMetal.lib</AdditionalDependencies>
+      <AdditionalDependencies>ViperCSObj.lib;ViperCS.lib;mstudioData.lib;mstMetal.lib;mstRouteObjects.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

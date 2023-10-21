@@ -102,7 +102,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>.\NRX4Lisp.def</ModuleDefinitionFile>
-      <AdditionalDependencies>ViperCSObj.lib;ViperCS.lib;mstudioData.lib</AdditionalDependencies>
+      <AdditionalDependencies>ViperCSObj.lib;ViperCS.lib;mstudioData.lib;mstRouteObjects.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(MS_NRX)\Source\lib\VS16\FullDebug NCAD\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Midl>
@@ -179,7 +179,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>.\NRX4Lisp.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(MS_NRX)\Source\lib\VS16\FullDebug NCAD\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ViperCSObj.lib;ViperCS.lib;mstudioData.lib</AdditionalDependencies>
+      <AdditionalDependencies>ViperCSObj.lib;ViperCS.lib;mstudioData.lib;mstRouteObjects.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
