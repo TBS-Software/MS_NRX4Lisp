@@ -1,4 +1,5 @@
 #pragma once
+#include "sstream"
 #include "CSDataInterfacesImpl.h"
 #include "MStudioObject.h"
 #include "vCSEntity.h"
@@ -6,7 +7,8 @@
 #include "vCSAxis.h"
 #include "vCSNode.h"
 #include "vCSNodeBase.h"
-#include "sstream"
+
+#include "mstRoutePrototype.h"
 
 static std::wstring GenerateTempPath() {
 	TCHAR lpTempPathBuffer[MAX_PATH];
@@ -106,17 +108,17 @@ static int Viper_GetAxisCoords_Impl(AcDbObjectId& id) {
 
 						std::stringstream ss;
 						ss << 
-							base_point_start.x << " " << 
-							base_point_start.y << " " << 
-							base_point_start.z << " " << std::endl << 
-							base_point_end.x << " " << 
-							base_point_end.y << " " << 
-							base_point_end.z << " " << std::endl << 
-							extents.maxPoint().x << " " << 
-							extents.maxPoint().y << " " << 
-							extents.maxPoint().z << " " << std::endl << 
-							extents.minPoint().x << " " << 
-							extents.minPoint().y << " " <<
+							base_point_start.x << " " << std::fixed <<
+							base_point_start.y << " " << std::fixed <<
+							base_point_start.z << " " << std::endl << std::fixed <<
+							base_point_end.x << " " << std::fixed <<
+							base_point_end.y << " " << std::fixed <<
+							base_point_end.z << " " << std::endl << std::fixed <<
+							extents.maxPoint().x << " " << std::fixed <<
+							extents.maxPoint().y << " " << std::fixed <<
+							extents.maxPoint().z << " " << std::endl << std::fixed <<
+							extents.minPoint().x << " " << std::fixed <<
+							extents.minPoint().y << " " << std::fixed <<
 							extents.minPoint().z << " " << std::endl;
 
 						CA2W ca2w(ss.str().c_str());
@@ -162,64 +164,40 @@ static int UpdateElementsViper_Impl(AcDbObjectId& id){
 	sourceEntity->close();
 }
 
-static int Storm_GetAxisCoords_Impl(AcDbObjectId& id) {
+/// <summary>
+/// Получает точки из трассы MS Кабельного хозяйства и выводит их в консоль
+/// </summary>
+/// <param name="id"></param>
+/// <returns></returns>
+static int Cable_GetAxisCoords_Impl(AcDbObjectId& id) {
 	AcDbEntity* sourceEntity;
 	acdbOpenObject(sourceEntity, id, AcDb::kForRead);
 
 	CMStudioObject* ms_object = reinterpret_cast <CMStudioObject*>(sourceEntity);
 	if (ms_object)
 	{
-		vCSEntity* viper_object = reinterpret_cast <vCSEntity*>(ms_object);
-		if (viper_object)
+		mstRoutePrototype* cable_object = reinterpret_cast <mstRoutePrototype*>(ms_object);
+		if (cable_object)
 		{
-			vCSAxis* viper_axis = reinterpret_cast <vCSAxis*>(ms_object);
-			if (viper_axis)
-			{
-				AcDbObjectIdArray viper_nodes = viper_axis->GetNodesArr();
-				int viper_nodes_count = viper_nodes.length();
+			std::shared_ptr<AcGeCurve3d> axis = cable_object->getAxis();
+			AcGePoint3d end_point;
+			if (axis->hasEndPoint(end_point)) {
+				double end_point_param = axis->paramOf(end_point);
+				for (int point_counter = 0; point_counter < end_point_param; point_counter++)
+				{
+					AcGePoint3d step_point = axis->evalPoint(point_counter * 1.0);
+					std::stringstream ss;
+					ss << std::fixed <<
+						step_point.x << " " << std::fixed <<
+						step_point.y << " " << std::fixed <<
+						step_point.z << " " << std::endl;
 
-				AcGePoint3dArray points3d;
-				points3d.setLogicalLength(viper_nodes_count);
-
-				int p_counter = 0;
-				for (auto viper_node_id : viper_nodes) {
-					AcDbEntity* viper_node_entity;
-					acdbOpenObject(viper_node_entity, id, AcDb::kForRead);
-
-					//BasePoint
-					vCSImplNodeBase* viper_segment_object = reinterpret_cast <vCSImplNodeBase*>(viper_node_entity);
-					if (viper_segment_object)
-					{
-						AcDbExtents extents;
-						AcGePoint3d base_point_start = viper_segment_object->GetStartPoint();
-						AcGePoint3d base_point_end = viper_segment_object->GetEndPoint();
-						Nano::ErrorStatus er = viper_segment_object->_getGeomExtents(extents);
-						//AcGePoint3d base_point = node->BasePoint();
-
-						std::stringstream ss;
-						ss <<
-							base_point_start.x << " " <<
-							base_point_start.y << " " <<
-							base_point_start.z << " " << std::endl <<
-							base_point_end.x << " " <<
-							base_point_end.y << " " <<
-							base_point_end.z << " " << std::endl <<
-							extents.maxPoint().x << " " <<
-							extents.maxPoint().y << " " <<
-							extents.maxPoint().z << " " << std::endl <<
-							extents.minPoint().x << " " <<
-							extents.minPoint().y << " " <<
-							extents.minPoint().z << " " << std::endl;
-
-						CA2W ca2w(ss.str().c_str());
-						std::wstring wide = ca2w;
-						acedPrompt(wide.c_str());
-						ss.str("");
-						p_counter++;
-					}
-
+					CA2W ca2w(ss.str().c_str());
+					std::wstring wide = ca2w;
+					acedPrompt(wide.c_str());
+					ss.str("");
 				}
-			}
+			}	
 		}
 	}
 	acDocManager->unlockDocument(acDocManager->curDocument());

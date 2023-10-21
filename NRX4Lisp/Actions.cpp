@@ -8,7 +8,9 @@
 #include "Actions.hpp"
 #include "MS_Actions.hpp"
 
-
+/*
+    Оригинальный код взят из примера ObjectARX 2023 ...\Samples\misc\fact_dg\fact.cpp
+*/
 #define ELEMENTS(array) (sizeof(array)/sizeof((array)[0]))
 
 
@@ -70,7 +72,7 @@ static int Viper_GetAxisCoords(struct resbuf* rb) {
     return Viper_GetAxisCoords_Impl(id);
 }
 
-static int Storm_GetAxisCoords(struct resbuf* rb) {
+static int Cable_GetAxisCoords(struct resbuf* rb) {
     AcDbObjectId id;
     int wait_getting = GetByRb(rb, id);
     if (wait_getting == RTERROR) {
@@ -78,7 +80,7 @@ static int Storm_GetAxisCoords(struct resbuf* rb) {
         return RTERROR;
     }
 
-    return Storm_GetAxisCoords_Impl(id);
+    return Cable_GetAxisCoords_Impl(id);
 }
 
 /*-----------------------------------------------------------------------*/
@@ -86,7 +88,7 @@ static int Storm_GetAxisCoords(struct resbuf* rb) {
 static struct func_entry func_table[] = { 
     {_T(/*MSG0*/"ms_save_props_to_xml"), SaveElementToXml},
     {_T(/*MSG0*/"ms_viper_get_axis_coords"), Viper_GetAxisCoords},
-    {_T(/*MSG0*/"ms_storm_get_axis_coords"), Storm_GetAxisCoords}
+    {_T(/*MSG0*/"ms_cable_get_axis_coords"), Cable_GetAxisCoords}
 };
 
 int Actions::LoadFunctions() {
